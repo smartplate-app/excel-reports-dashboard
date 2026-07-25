@@ -6,11 +6,13 @@
 <title>P&L Dashboard - Monthly Reports (May 2026)</title>
 <style>
 * { box-sizing:border-box; margin:0; padding:0; }
-body { font-family:system-ui,-apple-system,sans-serif; background:#0d0d1a; color:white; }
-.header { background:#16162a; border-bottom:1px solid rgba(255,255,255,0.07); padding:16px 20px; position:sticky; top:0; z-index:100; display:flex; justify-content:space-between; align-items:center;}
+body { font-family:system-ui,-apple-system,sans-serif; background:#0d0d1a; color:white; transition: 0.3s; }
+.header { background:#16162a; border-bottom:1px solid rgba(255,255,255,0.07); padding:16px 20px; position:sticky; top:0; z-index:100; display:flex; justify-content:space-between; align-items:center; transition: 0.3s; }
 .h-brand { font-size:22px; font-weight:900; color:white; }
 .h-brand span { color:#f59e0b; }
-.tabs-bar { display:flex; background:#16162a; border-bottom:1px solid rgba(255,255,255,0.07); }
+.theme-toggle { background:rgba(255,255,255,0.1); border:none; color:white; padding:6px 12px; border-radius:8px; cursor:pointer; font-size:14px; font-weight:600; }
+
+.tabs-bar { display:flex; background:#16162a; border-bottom:1px solid rgba(255,255,255,0.07); transition: 0.3s; }
 .tab-btn { flex:1; padding:14px 0; border:none; font-size:14px; font-weight:700; cursor:pointer; background:transparent; color:rgba(255,255,255,0.35); border-bottom:3px solid transparent; transition:all 0.2s; }
 .tab-btn.active { color:white; border-bottom:3px solid #f59e0b; background:rgba(245,158,11,0.06); }
 .period-toggles { display:flex; gap:10px; margin-bottom:20px; justify-content:center; }
@@ -18,27 +20,61 @@ body { font-family:system-ui,-apple-system,sans-serif; background:#0d0d1a; color
 .period-btn.active { background:#f59e0b; color:#fff; border-color:#f59e0b; }
 .container { max-width:800px; margin:0 auto; padding:20px 12px 60px; }
 .kpi-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:16px; }
-.kpi-card { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:14px; padding:16px; text-align:center; }
+.kpi-card { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.07); border-radius:14px; padding:16px; text-align:center; transition: 0.3s; }
 .kpi-lbl { font-size:12px; color:rgba(255,255,255,0.4); margin-bottom:6px; font-weight:600; }
-.kpi-val { font-size:22px; font-weight:800; margin-bottom:4px; }
+.kpi-val { font-size:22px; font-weight:800; margin-bottom:4px; transition: 0.3s; }
 .kpi-sub { font-size:11px; color:rgba(255,255,255,0.3); }
 .clr-green { color:#34d399; } .clr-orange { color:#fbbf24; } .clr-red { color:#f87171; }
-.prime-box { background:linear-gradient(135deg,rgba(245,158,11,0.15),rgba(217,119,6,0.05)); border:1px solid rgba(245,158,11,0.2); border-radius:14px; padding:20px; text-align:center; margin-bottom:20px; }
+.prime-box { background:linear-gradient(135deg,rgba(245,158,11,0.15),rgba(217,119,6,0.05)); border:1px solid rgba(245,158,11,0.2); border-radius:14px; padding:20px; text-align:center; margin-bottom:20px; transition: 0.3s; }
 .prime-box .pl { font-size:13px; color:rgba(255,255,255,0.6); font-weight:600; margin-bottom:6px; }
 .prime-box .pv { font-size:32px; font-weight:900; color:#fcd34d; }
 .prime-box .ps { font-size:12px; color:rgba(245,158,11,0.6); margin-top:4px; }
-.section { background:rgba(255,255,255,0.02); border-radius:16px; padding:20px; border:1px solid rgba(255,255,255,0.05); margin-bottom:20px; }
-.s-title { font-size:15px; font-weight:800; margin-bottom:16px; color:rgba(255,255,255,0.8); border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:10px; }
-.brk-row { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:13px; }
+
+.profit-box { background:linear-gradient(135deg,rgba(52,211,153,0.15),rgba(5,150,105,0.05)); border:1px solid rgba(52,211,153,0.2); border-radius:14px; padding:20px; text-align:center; margin-top:20px; transition: 0.3s; }
+.profit-box .pl { font-size:15px; color:rgba(255,255,255,0.8); font-weight:700; margin-bottom:6px; }
+.profit-box .pv { font-size:36px; font-weight:900; }
+.profit-box .ps { font-size:14px; color:rgba(255,255,255,0.6); margin-top:4px; font-weight:600; }
+
+.section { background:rgba(255,255,255,0.02); border-radius:16px; padding:20px; border:1px solid rgba(255,255,255,0.05); margin-bottom:20px; transition: 0.3s; }
+.s-title { font-size:15px; font-weight:800; margin-bottom:16px; color:rgba(255,255,255,0.8); border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:10px; transition: 0.3s; }
+.brk-row { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:13px; transition: 0.3s; }
 .brk-row:last-child { border-bottom:none; }
 .brk-cat { color:rgba(255,255,255,0.6); }
 .brk-val { font-weight:600; }
+
+/* LIGHT MODE */
+body.light-mode { background: #f8fafc; color: #0f172a; }
+body.light-mode .header { background: #ffffff; border-bottom: 1px solid #e2e8f0; }
+body.light-mode .h-brand { color: #0f172a; }
+body.light-mode .theme-toggle { background:#e2e8f0; color:#0f172a; }
+body.light-mode .tabs-bar { background: #ffffff; border-bottom: 1px solid #e2e8f0; }
+body.light-mode .tab-btn { color: #64748b; }
+body.light-mode .tab-btn.active { color: #0f172a; border-bottom: 3px solid #f59e0b; background: #fffbeb; }
+body.light-mode .period-btn { background: #ffffff; border-color: #cbd5e1; color: #475569; }
+body.light-mode .period-btn.active { background: #f59e0b; color: #ffffff; border-color: #f59e0b; }
+body.light-mode .kpi-card { background: #ffffff; border-color: #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+body.light-mode .kpi-lbl { color: #64748b; }
+body.light-mode .kpi-val { color: #0f172a; }
+body.light-mode .kpi-sub { color: #94a3b8; }
+body.light-mode .prime-box { background: #fffbeb; border-color: #fcd34d; }
+body.light-mode .prime-box .pl { color: #92400e; }
+body.light-mode .prime-box .pv { color: #b45309; }
+body.light-mode .prime-box .ps { color: #92400e; }
+body.light-mode .profit-box { background: #f0fdf4; border-color: #86efac; }
+body.light-mode .profit-box .pl { color: #166534; }
+body.light-mode .profit-box .ps { color: #15803d; }
+body.light-mode .section { background: #ffffff; border-color: #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+body.light-mode .s-title { color: #0f172a; border-bottom-color: #e2e8f0; }
+body.light-mode .brk-row { border-bottom-color: #f1f5f9; }
+body.light-mode .brk-cat { color: #475569; }
+body.light-mode .brk-val { color: #0f172a; }
 </style>
 </head>
 <body>
 
 <div class="header">
   <div class="h-brand">📊 <span>P&L</span> Reports</div>
+  <button class="theme-toggle" onclick="toggleTheme()">☀️ מצב בהיר</button>
 </div>
 
 <div class="tabs-bar">
@@ -57,9 +93,21 @@ body { font-family:system-ui,-apple-system,sans-serif; background:#0d0d1a; color
 </div>
 
 <script>
-let DATA = null;
+let DATA = {"Einstein": {"may": {"sales": 503041.0099999999, "food_cost": 141464.37, "labor_cost": 169715.52, "wolt": 48938.11, "breakdown": [{"category": "קניות חומרי גלם", "amount": 106821.25}, {"category": "קניות מסניפים", "amount": -43221.82000000001}, {"category": "קניות מקיטשן", "amount": 0.0}, {"category": "קניות מוצרים למכירה", "amount": 63785.280000000006}, {"category": "קניות מתכלים", "amount": 14079.66}, {"category": "שכר מטבח", "amount": 40364.0}, {"category": "שכר הנהלה", "amount": 22675.0}, {"category": "שכר דלפק", "amount": 32878.0}, {"category": "שכר קשת", "amount": 0.0}, {"category": "שכר חברות כוח אדם", "amount": 27392.800000000003}, {"category": "שכר כשרות", "amount": 2500.0}, {"category": "שכר מטה", "amount": 51000.0}, {"category": "שכר סניפים", "amount": -7094.279999999999}, {"category": "שכר ניהול-חשבונית", "amount": 0.0}, {"category": "אחזקה ומתכלים", "amount": 0.0}, {"category": "חשמל גז ומים", "amount": 5095.62}, {"category": "אחזקה וחומרי ניקוי", "amount": 5659.32}, {"category": "עמלות וואלט", "amount": 48938.11}, {"category": "עמלות אשראי", "amount": 3791.88}, {"category": "נסיעות ושליחויות", "amount": 14074.02}, {"category": "פרסום", "amount": 14093.349999999999}, {"category": "שכירות וארנונה", "amount": 69670.90000000001}, {"category": "תקורה מקיטשן", "amount": 0.0}, {"category": "דמי ניהול", "amount": 0.0}, {"category": "שירותים מקצועים", "amount": 3906.83}, {"category": "מיחשוב ותקשורת", "amount": 4814.42}, {"category": "נסיעות ורכב", "amount": 0.0}, {"category": "ביטוחים", "amount": 667.67}, {"category": "תרומות ואחרות", "amount": 0.0}]}, "ytd": {"sales": 2834935.3099999996, "food_cost": 938891.27, "labor_cost": 788997.42, "wolt": 193068.43, "breakdown": [{"category": "קניות חומרי גלם", "amount": 804897.53}, {"category": "קניות מסניפים", "amount": -224380.02999999997}, {"category": "קניות מקיטשן", "amount": 0.0}, {"category": "קניות מוצרים למכירה", "amount": 266763.07}, {"category": "קניות מתכלים", "amount": 91610.7}, {"category": "שכר מטבח", "amount": 180031.0}, {"category": "שכר הנהלה", "amount": 110549.0}, {"category": "שכר דלפק", "amount": 160669.0}, {"category": "שכר קשת", "amount": 0.0}, {"category": "שכר חברות כוח אדם", "amount": 203622.25}, {"category": "שכר כשרות", "amount": 17717.25}, {"category": "שכר מטה", "amount": 179000.0}, {"category": "שכר סניפים", "amount": -62591.08}, {"category": "שכר ניהול-חשבונית", "amount": 0.0}, {"category": "אחזקה ומתכלים", "amount": 0.0}, {"category": "חשמל גז ומים", "amount": 43691.200000000004}, {"category": "אחזקה וחומרי ניקוי", "amount": 48451.6}, {"category": "עמלות וואלט", "amount": 193068.43}, {"category": "עמלות אשראי", "amount": 29794.940000000002}, {"category": "נסיעות ושליחויות", "amount": 117825.66000000002}, {"category": "פרסום", "amount": 51377.99}, {"category": "שכירות וארנונה", "amount": 352524.88000000006}, {"category": "תקורה מקיטשן", "amount": 0.0}, {"category": "דמי ניהול", "amount": 0.0}, {"category": "שירותים מקצועים", "amount": 20104.49}, {"category": "מיחשוב ותקשורת", "amount": 33281.15}, {"category": "נסיעות ורכב", "amount": 0.0}, {"category": "ביטוחים", "amount": 3338.35}, {"category": "תרומות ואחרות", "amount": 0.0}]}}, "Schuster": {"may": {"sales": 369779.9499999999, "food_cost": 107897.22000000002, "labor_cost": 113988.55, "wolt": 47159.149999999994, "breakdown": [{"category": "קניות חומרי גלם", "amount": 66995.14}, {"category": "קניות מסניפים", "amount": 18534.739999999998}, {"category": "קניות מקיטשן", "amount": 0.0}, {"category": "קניות מוצרים למכירה", "amount": 10701.24}, {"category": "קניות מתכלים", "amount": 11666.1}, {"category": "שכר מטבח", "amount": 36767.0}, {"category": "שכר הנהלה", "amount": 18274.0}, {"category": "שכר דלפק", "amount": 13265.0}, {"category": "שכר קשת", "amount": 0.0}, {"category": "שכר חברות כוח אדם", "amount": 1632.55}, {"category": "שכר כשרות", "amount": 1550.0}, {"category": "שכר מטה", "amount": 42500.0}, {"category": "שכר סניפים", "amount": 0.0}, {"category": "שכר ניהול-חשבונית", "amount": 0.0}, {"category": "אחזקה ומתכלים", "amount": 0.0}, {"category": "חשמל גז ומים", "amount": 8734.22}, {"category": "אחזקה וחומרי ניקוי", "amount": 4643.900000000001}, {"category": "עמלות וואלט", "amount": 47159.149999999994}, {"category": "עמלות אשראי", "amount": 1955.6100000000001}, {"category": "נסיעות ושליחויות", "amount": 6342.2}, {"category": "פרסום", "amount": 167.51}, {"category": "שכירות וארנונה", "amount": 37596.189999999995}, {"category": "תקורה מקיטשן", "amount": 0.0}, {"category": "דמי ניהול", "amount": 0.0}, {"category": "שירותים מקצועים", "amount": 4117.83}, {"category": "מיחשוב ותקשורת", "amount": 3902.4700000000003}, {"category": "נסיעות ורכב", "amount": 0.0}, {"category": "ביטוחים", "amount": 623.25}, {"category": "תרומות ואחרות", "amount": 0.0}]}, "ytd": {"sales": 2056863.85, "food_cost": 671798.6999999998, "labor_cost": 578095.66, "wolt": 248607.4, "breakdown": [{"category": "קניות חומרי גלם", "amount": 458579.37}, {"category": "קניות מסניפים", "amount": 74747.82}, {"category": "קניות מקיטשן", "amount": 0.0}, {"category": "קניות מוצרים למכירה", "amount": 72442.69}, {"category": "קניות מתכלים", "amount": 66028.81999999999}, {"category": "שכר מטבח", "amount": 224837.0}, {"category": "שכר הנהלה", "amount": 89018.0}, {"category": "שכר דלפק", "amount": 74442.0}, {"category": "שכר קשת", "amount": 0.0}, {"category": "שכר חברות כוח אדם", "amount": 7677.04}, {"category": "שכר כשרות", "amount": 11906.24}, {"category": "שכר מטה", "amount": 150500.0}, {"category": "שכר סניפים", "amount": 13715.380000000001}, {"category": "שכר ניהול-חשבונית", "amount": 6000.0}, {"category": "אחזקה ומתכלים", "amount": 0.0}, {"category": "חשמל גז ומים", "amount": 37972.89}, {"category": "אחזקה וחומרי ניקוי", "amount": 26354.97}, {"category": "עמלות וואלט", "amount": 248607.4}, {"category": "עמלות אשראי", "amount": 9452.41}, {"category": "נסיעות ושליחויות", "amount": 35497.1}, {"category": "פרסום", "amount": 21443.3}, {"category": "שכירות וארנונה", "amount": 187695.84}, {"category": "תקורה מקיטשן", "amount": 0.0}, {"category": "דמי ניהול", "amount": 0.0}, {"category": "שירותים מקצועים", "amount": 21212.490000000005}, {"category": "מיחשוב ותקשורת", "amount": 20482.520000000004}, {"category": "נסיעות ורכב", "amount": 0.0}, {"category": "ביטוחים", "amount": 3116.25}, {"category": "תרומות ואחרות", "amount": 0.0}]}}, "Hod HaSharon": {"may": {"sales": 327679.47, "food_cost": 103069.66000000002, "labor_cost": 120377.06, "wolt": 26869.350000000002, "breakdown": [{"category": "קניות חומרי גלם", "amount": 53728.810000000005}, {"category": "קניות מסניפים", "amount": 19310.81}, {"category": "קניות מקיטשן", "amount": 0.0}, {"category": "קניות מוצרים למכירה", "amount": 21012.239999999998}, {"category": "קניות מתכלים", "amount": 9017.8}, {"category": "שכר מטבח", "amount": 22677.0}, {"category": "שכר הנהלה", "amount": 19465.0}, {"category": "שכר דלפק", "amount": 17200.0}, {"category": "שכר קשת", "amount": 0.0}, {"category": "שכר חברות כוח אדם", "amount": 14596.78}, {"category": "שכר כשרות", "amount": 2344.0}, {"category": "שכר מטה", "amount": 37000.0}, {"category": "שכר סניפים", "amount": 7094.279999999999}, {"category": "שכר ניהול-חשבונית", "amount": 0.0}, {"category": "אחזקה ומתכלים", "amount": 0.0}, {"category": "חשמל גז ומים", "amount": 2163.1}, {"category": "אחזקה וחומרי ניקוי", "amount": 4629.66}, {"category": "עמלות וואלט", "amount": 26869.350000000002}, {"category": "עמלות אשראי", "amount": 1726.93}, {"category": "נסיעות ושליחויות", "amount": 5544.51}, {"category": "פרסום", "amount": 220.34}, {"category": "שכירות וארנונה", "amount": 34280.23}, {"category": "תקורה מקיטשן", "amount": 0.0}, {"category": "דמי ניהול", "amount": 0.0}, {"category": "שירותים מקצועים", "amount": 3559.58}, {"category": "מיחשוב ותקשורת", "amount": 3540.58}, {"category": "נסיעות ורכב", "amount": 0.0}, {"category": "ביטוחים", "amount": 272.75}, {"category": "תרומות ואחרות", "amount": 0.0}]}, "ytd": {"sales": 1817936.66, "food_cost": 631499.15, "labor_cost": 582337.4500000001, "wolt": 134303.08000000002, "breakdown": [{"category": "קניות חומרי גלם", "amount": 307703.41}, {"category": "קניות מסניפים", "amount": 146973.59}, {"category": "קניות מקיטשן", "amount": 0.0}, {"category": "קניות מוצרים למכירה", "amount": 121186.39000000001}, {"category": "קניות מתכלים", "amount": 55635.759999999995}, {"category": "שכר מטבח", "amount": 114467.0}, {"category": "שכר הנהלה", "amount": 107341.0}, {"category": "שכר דלפק", "amount": 100438.0}, {"category": "שכר קשת", "amount": 0.0}, {"category": "שכר חברות כוח אדם", "amount": 75174.07}, {"category": "שכר כשרות", "amount": 17618.0}, {"category": "שכר מטה", "amount": 130000.0}, {"category": "שכר סניפים", "amount": 37299.380000000005}, {"category": "שכר ניהול-חשבונית", "amount": 0.0}, {"category": "אחזקה ומתכלים", "amount": 0.0}, {"category": "חשמל גז ומים", "amount": 18489.079999999998}, {"category": "אחזקה וחומרי ניקוי", "amount": 21034.4}, {"category": "עמלות וואלט", "amount": 134303.08000000002}, {"category": "עמלות אשראי", "amount": 10813.900000000001}, {"category": "נסיעות ושליחויות", "amount": 51878.44}, {"category": "פרסום", "amount": 7845.76}, {"category": "שכירות וארנונה", "amount": 173808.48}, {"category": "תקורה מקיטשן", "amount": 0.0}, {"category": "דמי ניהול", "amount": 0.0}, {"category": "שירותים מקצועים", "amount": 18368.239999999998}, {"category": "מיחשוב ותקשורת", "amount": 16893.43}, {"category": "נסיעות ורכב", "amount": 0.0}, {"category": "ביטוחים", "amount": 1363.75}, {"category": "תרומות ואחרות", "amount": 0.0}]}}};
 let currentBranch = 'Einstein';
 let currentPeriod = 'may';
+let isLight = false;
+
+function toggleTheme() {
+  isLight = !isLight;
+  if(isLight) {
+    document.body.classList.add('light-mode');
+    document.querySelector('.theme-toggle').innerText = '🌙 מצב כהה';
+  } else {
+    document.body.classList.remove('light-mode');
+    document.querySelector('.theme-toggle').innerText = '☀️ מצב בהיר';
+  }
+}
 
 function fmt(n){ return Math.round(n).toLocaleString(); }
 
@@ -77,12 +125,18 @@ function render() {
   const labor = d.labor_cost || 0;
   const wolt = d.wolt || 0;
   
+  let totalExpenses = 0;
+  d.breakdown.forEach(x => totalExpenses += x.amount);
+  
+  const profit = sales - totalExpenses;
+  const profitPct = sales ? (profit/sales)*100 : 0;
+  
   const foodPct = sales ? (food/sales)*100 : 0;
   const laborPct = sales ? (labor/sales)*100 : 0;
-  const prime = foodPct + laborPct;
   const woltPct = sales ? (wolt/sales)*100 : 0;
+  const totalPct = foodPct + laborPct + woltPct;
   
-  const pClr = prime <= 60 ? 'clr-green' : prime <= 65 ? 'clr-orange' : 'clr-red';
+  const pClr = totalPct <= 63 ? 'clr-green' : totalPct <= 70 ? 'clr-orange' : 'clr-red';
   
   let html = '<div class="kpi-grid">';
   html += '<div class="kpi-card"><div class="kpi-lbl">מכירות נטו</div><div class="kpi-val">'+fmt(sales)+' ₪</div></div>';
@@ -91,16 +145,27 @@ function render() {
   html += '<div class="kpi-card"><div class="kpi-lbl">עלות שכר (ללא טיפ)</div><div class="kpi-val">'+fmt(labor)+' ₪</div><div class="kpi-sub">'+laborPct.toFixed(1)+'% מהמכירות</div></div>';
   html += '</div>';
   
-  html += '<div class="prime-box"><div class="pl">Prime Cost (מזון + עבודה)</div><div class="pv '+pClr+'">'+prime.toFixed(1)+'%</div><div class="ps">יעד חברה: 63%</div></div>';
+  html += '<div class="prime-box"><div class="pl">עלויות תפעול (Prime Cost + עמלות וולט)</div><div class="pv '+pClr+'">'+totalPct.toFixed(1)+'%</div><div class="ps">יעד חברה: 63% &nbsp; | &nbsp; מזון: '+foodPct.toFixed(1)+'% &nbsp; | &nbsp; שכר: '+laborPct.toFixed(1)+'% &nbsp; | &nbsp; וולט: '+woltPct.toFixed(1)+'%</div></div>';
   
   // Breakdown
-  let items = d.breakdown.filter(x => Math.abs(x.amount) > 100); // Filter out zero/tiny rows
+  let items = d.breakdown.filter(x => Math.abs(x.amount) > 100); 
   items.sort((a,b) => b.amount - a.amount);
   
-  html += '<div class="section"><div class="s-title">פירוט הוצאות (' + (currentPeriod==='may'?'מאי':'YTD') + ')</div>';
+  html += '<div class="section"><div class="s-title">פירוט הוצאות מלא (' + (currentPeriod==='may'?'מאי':'YTD') + ')</div>';
   items.forEach(it => {
     html += '<div class="brk-row"><div class="brk-cat">'+it.category+'</div><div class="brk-val">'+fmt(it.amount)+' ₪</div></div>';
   });
+  html += '</div>';
+  
+  // Profit Box
+  let profitColor = profit >= 0 ? '#10b981' : '#ef4444';
+  let profitSign = profit > 0 ? '+' : '';
+  if(isLight) { profitColor = profit >= 0 ? '#166534' : '#b91c1c'; }
+  
+  html += '<div class="profit-box" style="border-color: '+(profit>=0?'rgba(52,211,153,0.3)':'rgba(239,68,68,0.3)')+';">';
+  html += '<div class="pl">רווח נקי משוער</div>';
+  html += '<div class="pv" style="color:'+profitColor+';">'+profitSign+fmt(profit)+' ₪</div>';
+  html += '<div class="ps">'+profitPct.toFixed(1)+'% ממחזור המכירות</div>';
   html += '</div>';
   
   document.getElementById('dashboard-content').innerHTML = html;
@@ -109,7 +174,6 @@ function render() {
 function setBranch(b) { currentBranch = b; render(); }
 function setPeriod(p) { currentPeriod = p; render(); }
 
-DATA = {"Einstein": {"may": {"sales": 503041.0099999999, "food_cost": 141464.37, "labor_cost": 169715.52, "wolt": 48938.11, "breakdown": [{"category": "קניות חומרי גלם", "amount": 106821.25}, {"category": "קניות מסניפים", "amount": -43221.82000000001}, {"category": "קניות מקיטשן", "amount": 0.0}, {"category": "קניות מוצרים למכירה", "amount": 63785.280000000006}, {"category": "קניות מתכלים", "amount": 14079.66}, {"category": "שכר מטבח", "amount": 40364.0}, {"category": "שכר הנהלה", "amount": 22675.0}, {"category": "שכר דלפק", "amount": 32878.0}, {"category": "שכר קשת", "amount": 0.0}, {"category": "שכר חברות כוח אדם", "amount": 27392.800000000003}, {"category": "שכר כשרות", "amount": 2500.0}, {"category": "שכר מטה", "amount": 51000.0}, {"category": "שכר סניפים", "amount": -7094.279999999999}, {"category": "שכר ניהול-חשבונית", "amount": 0.0}, {"category": "אחזקה ומתכלים", "amount": 0.0}, {"category": "חשמל גז ומים", "amount": 5095.62}, {"category": "אחזקה וחומרי ניקוי", "amount": 5659.32}, {"category": "עמלות וואלט", "amount": 48938.11}, {"category": "עלות המכירות", "amount": 0.0}, {"category": "רווח גולמי", "amount": 0.0}, {"category": "הוצאות מכירה", "amount": 0.0}, {"category": "עמלות אשראי", "amount": 3791.88}, {"category": "נסיעות ושליחויות", "amount": 14074.02}, {"category": "פרסום", "amount": 14093.349999999999}, {"category": "הנהלה וכלליות", "amount": 0.0}, {"category": "שכירות וארנונה", "amount": 69670.90000000001}, {"category": "תקורה מקיטשן", "amount": 0.0}, {"category": "דמי ניהול", "amount": 0.0}, {"category": "שירותים מקצועים", "amount": 3906.83}, {"category": "מיחשוב ותקשורת", "amount": 4814.42}]}, "ytd": {"sales": 2834935.3099999996, "food_cost": 938891.27, "labor_cost": 788997.42, "wolt": 193068.43, "breakdown": [{"category": "קניות חומרי גלם", "amount": 804897.53}, {"category": "קניות מסניפים", "amount": -224380.02999999997}, {"category": "קניות מקיטשן", "amount": 0.0}, {"category": "קניות מוצרים למכירה", "amount": 266763.07}, {"category": "קניות מתכלים", "amount": 91610.7}, {"category": "שכר מטבח", "amount": 180031.0}, {"category": "שכר הנהלה", "amount": 110549.0}, {"category": "שכר דלפק", "amount": 160669.0}, {"category": "שכר קשת", "amount": 0.0}, {"category": "שכר חברות כוח אדם", "amount": 203622.25}, {"category": "שכר כשרות", "amount": 17717.25}, {"category": "שכר מטה", "amount": 179000.0}, {"category": "שכר סניפים", "amount": -62591.08}, {"category": "שכר ניהול-חשבונית", "amount": 0.0}, {"category": "אחזקה ומתכלים", "amount": 0.0}, {"category": "חשמל גז ומים", "amount": 43691.200000000004}, {"category": "אחזקה וחומרי ניקוי", "amount": 48451.6}, {"category": "עמלות וואלט", "amount": 193068.43}, {"category": "עלות המכירות", "amount": 0.0}, {"category": "רווח גולמי", "amount": 0.0}, {"category": "הוצאות מכירה", "amount": 0.0}, {"category": "עמלות אשראי", "amount": 29794.940000000002}, {"category": "נסיעות ושליחויות", "amount": 117825.66000000002}, {"category": "פרסום", "amount": 51377.99}, {"category": "הנהלה וכלליות", "amount": 0.0}, {"category": "שכירות וארנונה", "amount": 352524.88000000006}, {"category": "תקורה מקיטשן", "amount": 0.0}, {"category": "דמי ניהול", "amount": 0.0}, {"category": "שירותים מקצועים", "amount": 20104.49}, {"category": "מיחשוב ותקשורת", "amount": 33281.15}]}}, "Schuster": {"may": {"sales": 369779.9499999999, "food_cost": 107897.22000000002, "labor_cost": 113988.55, "wolt": 47159.149999999994, "breakdown": [{"category": "קניות חומרי גלם", "amount": 66995.14}, {"category": "קניות מסניפים", "amount": 18534.739999999998}, {"category": "קניות מקיטשן", "amount": 0.0}, {"category": "קניות מוצרים למכירה", "amount": 10701.24}, {"category": "קניות מתכלים", "amount": 11666.1}, {"category": "שכר מטבח", "amount": 36767.0}, {"category": "שכר הנהלה", "amount": 18274.0}, {"category": "שכר דלפק", "amount": 13265.0}, {"category": "שכר קשת", "amount": 0.0}, {"category": "שכר חברות כוח אדם", "amount": 1632.55}, {"category": "שכר כשרות", "amount": 1550.0}, {"category": "שכר מטה", "amount": 42500.0}, {"category": "שכר סניפים", "amount": 0.0}, {"category": "שכר ניהול-חשבונית", "amount": 0.0}, {"category": "אחזקה ומתכלים", "amount": 0.0}, {"category": "חשמל גז ומים", "amount": 8734.22}, {"category": "אחזקה וחומרי ניקוי", "amount": 4643.900000000001}, {"category": "עמלות וואלט", "amount": 47159.149999999994}, {"category": "עלות המכירות", "amount": 0.0}, {"category": "רווח גולמי", "amount": 0.0}, {"category": "הוצאות מכירה", "amount": 0.0}, {"category": "עמלות אשראי", "amount": 1955.6100000000001}, {"category": "נסיעות ושליחויות", "amount": 6342.2}, {"category": "פרסום", "amount": 167.51}, {"category": "הנהלה וכלליות", "amount": 0.0}, {"category": "שכירות וארנונה", "amount": 37596.189999999995}, {"category": "תקורה מקיטשן", "amount": 0.0}, {"category": "דמי ניהול", "amount": 0.0}, {"category": "שירותים מקצועים", "amount": 4117.83}]}, "ytd": {"sales": 2056863.85, "food_cost": 671798.6999999998, "labor_cost": 578095.66, "wolt": 248607.4, "breakdown": [{"category": "קניות חומרי גלם", "amount": 458579.37}, {"category": "קניות מסניפים", "amount": 74747.82}, {"category": "קניות מקיטשן", "amount": 0.0}, {"category": "קניות מוצרים למכירה", "amount": 72442.69}, {"category": "קניות מתכלים", "amount": 66028.81999999999}, {"category": "שכר מטבח", "amount": 224837.0}, {"category": "שכר הנהלה", "amount": 89018.0}, {"category": "שכר דלפק", "amount": 74442.0}, {"category": "שכר קשת", "amount": 0.0}, {"category": "שכר חברות כוח אדם", "amount": 7677.04}, {"category": "שכר כשרות", "amount": 11906.24}, {"category": "שכר מטה", "amount": 150500.0}, {"category": "שכר סניפים", "amount": 13715.380000000001}, {"category": "שכר ניהול-חשבונית", "amount": 6000.0}, {"category": "אחזקה ומתכלים", "amount": 0.0}, {"category": "חשמל גז ומים", "amount": 37972.89}, {"category": "אחזקה וחומרי ניקוי", "amount": 26354.97}, {"category": "עמלות וואלט", "amount": 248607.4}, {"category": "עלות המכירות", "amount": 0.0}, {"category": "רווח גולמי", "amount": 0.0}, {"category": "הוצאות מכירה", "amount": 0.0}, {"category": "עמלות אשראי", "amount": 9452.41}, {"category": "נסיעות ושליחויות", "amount": 35497.1}, {"category": "פרסום", "amount": 21443.3}, {"category": "הנהלה וכלליות", "amount": 0.0}, {"category": "שכירות וארנונה", "amount": 187695.84}, {"category": "תקורה מקיטשן", "amount": 0.0}, {"category": "דמי ניהול", "amount": 0.0}, {"category": "שירותים מקצועים", "amount": 21212.490000000005}]}}, "Hod HaSharon": {"may": {"sales": 327679.47, "food_cost": 103069.66000000002, "labor_cost": 120377.06, "wolt": 26869.350000000002, "breakdown": [{"category": "קניות חומרי גלם", "amount": 53728.810000000005}, {"category": "קניות מסניפים", "amount": 19310.81}, {"category": "קניות מקיטשן", "amount": 0.0}, {"category": "קניות מוצרים למכירה", "amount": 21012.239999999998}, {"category": "קניות מתכלים", "amount": 9017.8}, {"category": "שכר מטבח", "amount": 22677.0}, {"category": "שכר הנהלה", "amount": 19465.0}, {"category": "שכר דלפק", "amount": 17200.0}, {"category": "שכר קשת", "amount": 0.0}, {"category": "שכר חברות כוח אדם", "amount": 14596.78}, {"category": "שכר כשרות", "amount": 2344.0}, {"category": "שכר מטה", "amount": 37000.0}, {"category": "שכר סניפים", "amount": 7094.279999999999}, {"category": "שכר ניהול-חשבונית", "amount": 0.0}, {"category": "אחזקה ומתכלים", "amount": 0.0}, {"category": "חשמל גז ומים", "amount": 2163.1}, {"category": "אחזקה וחומרי ניקוי", "amount": 4629.66}, {"category": "עמלות וואלט", "amount": 26869.350000000002}, {"category": "עלות המכירות", "amount": 0.0}, {"category": "רווח גולמי", "amount": 0.0}, {"category": "הוצאות מכירה", "amount": 0.0}, {"category": "עמלות אשראי", "amount": 1726.93}, {"category": "נסיעות ושליחויות", "amount": 5544.51}, {"category": "פרסום", "amount": 220.34}, {"category": "הנהלה וכלליות", "amount": 0.0}, {"category": "שכירות וארנונה", "amount": 34280.23}, {"category": "תקורה מקיטשן", "amount": 0.0}, {"category": "דמי ניהול", "amount": 0.0}, {"category": "שירותים מקצועים", "amount": 3559.58}]}, "ytd": {"sales": 1817936.66, "food_cost": 631499.15, "labor_cost": 582337.4500000001, "wolt": 134303.08000000002, "breakdown": [{"category": "קניות חומרי גלם", "amount": 307703.41}, {"category": "קניות מסניפים", "amount": 146973.59}, {"category": "קניות מקיטשן", "amount": 0.0}, {"category": "קניות מוצרים למכירה", "amount": 121186.39000000001}, {"category": "קניות מתכלים", "amount": 55635.759999999995}, {"category": "שכר מטבח", "amount": 114467.0}, {"category": "שכר הנהלה", "amount": 107341.0}, {"category": "שכר דלפק", "amount": 100438.0}, {"category": "שכר קשת", "amount": 0.0}, {"category": "שכר חברות כוח אדם", "amount": 75174.07}, {"category": "שכר כשרות", "amount": 17618.0}, {"category": "שכר מטה", "amount": 130000.0}, {"category": "שכר סניפים", "amount": 37299.380000000005}, {"category": "שכר ניהול-חשבונית", "amount": 0.0}, {"category": "אחזקה ומתכלים", "amount": 0.0}, {"category": "חשמל גז ומים", "amount": 18489.079999999998}, {"category": "אחזקה וחומרי ניקוי", "amount": 21034.4}, {"category": "עמלות וואלט", "amount": 134303.08000000002}, {"category": "עלות המכירות", "amount": 0.0}, {"category": "רווח גולמי", "amount": 0.0}, {"category": "הוצאות מכירה", "amount": 0.0}, {"category": "עמלות אשראי", "amount": 10813.900000000001}, {"category": "נסיעות ושליחויות", "amount": 51878.44}, {"category": "פרסום", "amount": 7845.76}, {"category": "הנהלה וכלליות", "amount": 0.0}, {"category": "שכירות וארנונה", "amount": 173808.48}, {"category": "תקורה מקיטשן", "amount": 0.0}, {"category": "דמי ניהול", "amount": 0.0}, {"category": "שירותים מקצועים", "amount": 18368.239999999998}]}}};
 render();
 </script>
 </body>
